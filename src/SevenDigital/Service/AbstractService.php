@@ -4,31 +4,55 @@ namespace SevenDigital\Service;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
-use SevenDigital\DOMDocumentFactory;
-use Symfony\Component\Config\Util\XmlUtils;
+use SevenDigital\ResponseFactory;
 
 abstract class AbstractService
 {
-    const STATUS_OK    = 'ok';
-    const STATUS_ERROR = 'error';
-
     private $httpClient;
-    private $xmlFactory;
+    private $responseFactory;
+    private $methods = [];
 
-    public function __construct(Client $httpClient, DOMDocumentFactory $xmlFactory = null)
+    public function __construct(Client $httpClient, ResponseFactory $responseFactory = null)
     {
         $this->httpClient = $httpClient;
-        $this->xmlFactory = $xmlFactory ?: new DOMDocumentFactory;
+        $this->responseFactory = $responseFactory ?: new ResponseFactory;
+
+        $this->configure();
     }
 
-    protected function get($uri)
+    public function __call($method, $arguments)
     {
-        $request = $this->httpClient->get($uri);
+        if (!isset($this->methods[$method])) {
+            throw new \Exception(sprintf(
+                'Call to undefined method %s::%s().', get_class($this), $method
+            ));
+        }
 
-        return $this->call($request);
+        $request = $this->httpClient->createRequest(
+            $this->methods[$method]['httpMethod'],
+            sprintf('/%s/%s', $this->getName(), $method)
+        );
+
+
+        $request->getQuery()->merge(array_combine(
+            $this->methods[$method]['params'], $arguments
+        ));
+
+        return $this->request($request);
     }
 
-    private function call(RequestInterface $request)
+    abstract public function configure();
+    abstract public function getName();
+
+    protected function addMethod($name, $httpMethod, $params)
+    {
+        $this->methods[$name] = [
+            'httpMethod' => $httpMethod,
+            'params'     => $params,
+        ];
+    }
+
+    private function request(RequestInterface $request)
     {
         $response = $request->send();
 
@@ -37,32 +61,7 @@ abstract class AbstractService
                 throw new AuthorizationFailedException($response->getReasonPhrase());
 
             default:
-                $data = $this->xmlFactory->createFromXml($response->getBody(true));
+            return $this->responseFactory->createFromXml($response->getBody(true));
         }
-
-        if (false === $this->hasError($data)) {
-            return XmlUtils::convertDomElementToArray($data);
-        } else {
-            throw new BadRequestHttpException($this->getError($data));
-        }
-    }
-
-    private function hasError($xml)
-    {
-        $status = $xml->attributes->getNamedItem('status')->nodeValue;
-
-        switch ($status) {
-            case self::STATUS_OK:
-                return false;
-
-            case self::STATUS_ERROR:
-            default:
-                return true;
-        }
-    }
-
-    private function getError($xml)
-    {
-        return $xml->error->errorMessage;
     }
 }

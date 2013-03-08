@@ -4,6 +4,7 @@ namespace SevenDigital;
 
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use SevenDigital\Service;
 
 class ApiClient
 {

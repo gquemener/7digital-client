@@ -4,10 +4,13 @@ namespace SevenDigital\Service;
 
 class Track extends AbstractService
 {
-    private $endpoint = 'track';
-
-    public function search($query)
+    public function getName()
     {
-        return $this->get(sprintf('/%s/search?q=%s', $this->endpoint, $query));
+        return 'track';
+    }
+
+    public function configure()
+    {
+        $this->addMethod('search', 'GET', ['q']);
     }
 }
