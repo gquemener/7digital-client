@@ -1,0 +1,23 @@
+{
+    "name": "gquemener/7digital-client",
+    "description": "A PHP 7Digital api client",
+    "authors": [
+        {
+            "name": "Gildas Quéméner",
+            "email": "gildas.quemener@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "guzzle/guzzle": "~3.1"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master as 0.7.2",
+        "phpspec/phpspec2": "dev-develop",
+        "phpspec/php-diff": "*@dev"
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-0": { "": "src/" }
+    }
+}
