@@ -35,9 +35,9 @@ abstract class AbstractService
             sprintf('%s/%s', $this->getName(), $method)
         );
 
-        $request->getQuery()->merge(array_combine(
-            $this->methods[$method]['params'], $arguments
-        ));
+        $request->getQuery()->merge(
+            $this->methods[$method]['getParameters']($arguments)
+        );
 
         return $this->request($request);
     }
@@ -45,11 +45,15 @@ abstract class AbstractService
     abstract public function configure();
     abstract public function getName();
 
-    protected function addMethod($name, $httpMethod, $params)
+    protected function addMethod($name, $httpMethod, \Closure $getParameters = null)
     {
+        if (null === $getParameters) {
+            $getParameters = function ($params) { return $params; };
+        }
+
         $this->methods[$name] = array(
-            'httpMethod' => $httpMethod,
-            'params'     => $params,
+            'httpMethod'    => $httpMethod,
+            'getParameters' => $getParameters,
         );
     }
 
