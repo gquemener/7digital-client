@@ -18,9 +18,9 @@ class AddConsumerKeySubscriber extends ObjectBehavior
 
     function it_should_subscribe_to_request_before_send_event()
     {
-        $this->getSubscribedEvents()->shouldReturn([
+        $this->getSubscribedEvents()->shouldReturn(array(
             'request.before_send' => array('onRequestBeforeSend', -1000)
-        ]);
+        ));
     }
 
     /**

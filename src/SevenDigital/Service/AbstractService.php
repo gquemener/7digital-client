@@ -10,7 +10,7 @@ abstract class AbstractService
 {
     private $httpClient;
     private $responseFactory;
-    private $methods = [];
+    private $methods = array();
 
     public function __construct(Client $httpClient, $consumerKey)
     {
@@ -47,10 +47,10 @@ abstract class AbstractService
 
     protected function addMethod($name, $httpMethod, $params)
     {
-        $this->methods[$name] = [
+        $this->methods[$name] = array(
             'httpMethod' => $httpMethod,
             'params'     => $params,
-        ];
+        );
     }
 
     private function request(RequestInterface $request)
