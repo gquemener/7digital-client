@@ -17,7 +17,7 @@ use SevenDigital\ApiClient;
 use Guzzle\Http\Client;
 
 $httpClient = new Client('http://api.7digital.com');
-$client = new ApiClient($httpClient, '7dbnjtfeujwb');
+$client = new ApiClient($httpClient, '**consumer_key**');
 
 $track = $client->getTrackService();
 $results = $track->search('Queen');
