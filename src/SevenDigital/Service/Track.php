@@ -2,7 +2,9 @@
 
 namespace SevenDigital\Service;
 
-class Track extends AbstractService
+use SevenDigital\Service;
+
+class Track extends Service
 {
     public function getName()
     {

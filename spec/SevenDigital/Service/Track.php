@@ -22,7 +22,7 @@ class Track extends ObjectBehavior
 
     function it_should_be_an_api_service()
     {
-        $this->shouldBeAnInstanceOf('SevenDigital\Service\AbstractService');
+        $this->shouldBeAnInstanceOf('SevenDigital\Service');
     }
 
     function it_should_be_named_track()

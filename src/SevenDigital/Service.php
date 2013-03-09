@@ -1,11 +1,11 @@
 <?php
 
-namespace SevenDigital\Service;
+namespace SevenDigital;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 
-abstract class AbstractService
+abstract class Service
 {
     private $httpClient;
     private $methods = array();
