@@ -32,3 +32,5 @@ $results = $track->search(array(
 
 $results = $track->details(/** a 7digital track id */);
 ```
+
+and many more coming...
