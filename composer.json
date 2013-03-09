@@ -1,6 +1,7 @@
 {
     "name": "gquemener/7digital-client",
     "description": "A PHP 7Digital api client",
+    "license": "MIT",
     "authors": [
         {
             "name": "Gildas Quéméner",
