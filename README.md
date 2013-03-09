@@ -18,7 +18,7 @@ require './vendor/autoload.php';
 use SevenDigital\ApiClient;
 use Guzzle\Http\Client;
 
-$client = new ApiClient(/** consumer_key */');
+$client = new ApiClient(/** consumer_key */);
 
 $track = $client->getTrackService();
 
