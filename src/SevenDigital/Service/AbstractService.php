@@ -32,7 +32,7 @@ abstract class AbstractService
 
         $request = $this->httpClient->createRequest(
             $this->methods[$method]['httpMethod'],
-            sprintf('/1.2/%s/%s', $this->getName(), $method)
+            sprintf('%s/%s', $this->getName(), $method)
         );
 
         $request->getQuery()->merge(array_combine(

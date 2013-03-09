@@ -33,7 +33,7 @@ class Track extends ObjectBehavior
         $httpClient, $responseFactory, $request, $response, $queryString
     )
     {
-        $httpClient->createRequest('GET', '/1.2/track/search')->willReturn($request);
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
         $request->getQuery()->willReturn($queryString);
         $queryString->merge(array('q' => 'Genesis'))->shouldBeCalled();
         $request->send()->willReturn($response);
