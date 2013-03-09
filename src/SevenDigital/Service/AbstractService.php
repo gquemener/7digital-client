@@ -4,7 +4,7 @@ namespace SevenDigital\Service;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
-use SevenDigital\ResponseFactory;
+use SevenDigital\EventListener\AddConsumerKeySubscriber;
 
 abstract class AbstractService
 {
@@ -12,10 +12,10 @@ abstract class AbstractService
     private $responseFactory;
     private $methods = [];
 
-    public function __construct(Client $httpClient, ResponseFactory $responseFactory = null)
+    public function __construct(Client $httpClient, $consumerKey)
     {
-        $this->httpClient = $httpClient;
-        $this->responseFactory = $responseFactory ?: new ResponseFactory;
+        $this->httpClient      = $httpClient;
+        $this->consumerKey     = $consumerKey;
 
         $this->configure();
     }
@@ -28,11 +28,12 @@ abstract class AbstractService
             ));
         }
 
+        $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($this->consumerKey));
+
         $request = $this->httpClient->createRequest(
             $this->methods[$method]['httpMethod'],
-            sprintf('/%s/%s', $this->getName(), $method)
+            sprintf('/1.2/%s/%s', $this->getName(), $method)
         );
-
 
         $request->getQuery()->merge(array_combine(
             $this->methods[$method]['params'], $arguments
@@ -61,7 +62,7 @@ abstract class AbstractService
                 throw new AuthorizationFailedException($response->getReasonPhrase());
 
             default:
-            return $this->responseFactory->createFromXml($response->getBody(true));
+                return $response->xml();
         }
     }
 }

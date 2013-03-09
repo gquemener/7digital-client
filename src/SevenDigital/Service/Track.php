@@ -11,6 +11,8 @@ class Track extends AbstractService
 
     public function configure()
     {
-        $this->addMethod('search', 'GET', ['q']);
+        $this->addMethod('search', 'GET', array(
+            'q',
+        ));
     }
 }

@@ -8,14 +8,18 @@ use SevenDigital\Service;
 
 class ApiClient
 {
-    public function __construct(Client $httpClient, OauthPlugin $oauth)
+    protected $httpClient;
+    protected $oauth;
+
+    public function __construct(Client $httpClient, $consumerKey)
     {
-        $this->httpClient = $httpClient;
-        $this->httpClient->addSubscriber($oauth);
+        $this->httpClient  = $httpClient;
+        $this->consumerKey = $consumerKey;
+        //$this->httpClient->addSubscriber($oauth);
     }
 
     public function getTrackService()
     {
-        return new Service\Track($this->httpClient);
+        return new Service\Track($this->httpClient, $this->consumerKey);
     }
 }

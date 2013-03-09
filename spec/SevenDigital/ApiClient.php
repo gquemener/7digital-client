@@ -7,14 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class ApiClient extends ObjectBehavior
 {
     /**
-     * @param Guzzle\Http\Client              $httpClient
-     * @param Guzzle\Plugin\Oauth\OauthPlugin $oauth
+     * @param Guzzle\Http\Client $httpClient
      */
-    function let($httpClient, $oauth)
+    function let($httpClient)
     {
-        $httpClient->addSubscriber($oauth)->shouldBeCalled();
-
-        $this->beConstructedWith($httpClient, $oauth);
+        $this->beConstructedWith($httpClient, 'consumer_key');
     }
 
     function it_should_provide_access_to_the_track_service()

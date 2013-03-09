@@ -7,14 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class Track extends ObjectBehavior
 {
     /**
-     * @param Guzzle\Http\Client           $httpClient
-     * @param SevenDigital\ResponseFactory $responseFactory
+     * @param Guzzle\Http\Client $httpClient
      */
-    function let($httpClient, $responseFactory)
+    function let($httpClient)
     {
-        $responseFactory->createFromXml(ANY_ARGUMENT)->willReturn(array());
-
-        $this->beConstructedWith($httpClient, $responseFactory);
+        $this->beConstructedWith($httpClient, 'consumer_key');
     }
 
     function it_should_be_an_api_service()
@@ -36,14 +33,15 @@ class Track extends ObjectBehavior
         $httpClient, $responseFactory, $request, $response, $queryString
     )
     {
-        $httpClient->createRequest('GET', '/track/search')->willReturn($request);
+        $httpClient->createRequest('GET', '/1.2/track/search')->willReturn($request);
         $request->getQuery()->willReturn($queryString);
         $queryString->merge(array('q' => 'Genesis'))->shouldBeCalled();
         $request->send()->willReturn($response);
         $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
 
         $result = $this->search('Genesis');
-        $result->shouldBe([]);
+        $result->shouldBe(array());
     }
 
     function it_should_throw_exception_for_undefined_method()
