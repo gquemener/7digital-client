@@ -36,4 +36,9 @@ class ApiClient
     {
         return new Service\Track($this->httpClient);
     }
+
+    public function getArtistService()
+    {
+        return new Service\Artist($this->httpClient);
+    }
 }

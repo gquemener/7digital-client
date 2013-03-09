@@ -16,4 +16,10 @@ class ApiClient extends ObjectBehavior
         $service = $this->getTrackService();
         $service->shouldBeAnInstanceOf('SevenDigital\Service\Track');
     }
+
+    function it_should_provide_access_to_the_artist_service()
+    {
+        $service = $this->getArtistService();
+        $service->shouldBeAnInstanceOf('SevenDigital\Service\Artist');
+    }
 }
