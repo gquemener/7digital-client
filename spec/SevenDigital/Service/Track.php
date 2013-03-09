@@ -44,8 +44,26 @@ class Track extends ObjectBehavior
         $result->shouldBe(array());
     }
 
-    function it_should_throw_exception_for_undefined_method()
+    function it_should_throw_an_exception_for_undefined_method()
     {
         $this->shouldThrow(new \Exception('Call to undefined method SevenDigital\Service\Track::invalidMethod().'))->duringInvalidMethod('incredibru');
+    }
+
+    /**
+     * @param Guzzle\Http\Message\RequestInterface $request
+     * @param Guzzle\Http\Message\Response         $response
+     * @param Guzzle\Http\QueryString              $queryString
+     */
+    function it_should_throw_an_exception_if_authorization_failed(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $request->getQuery()->willReturn($queryString);
+        $request->send()->willReturn($response);
+        $response->getStatusCode()->willReturn(401);
+        $response->getReasonPhrase()->willReturn('Authentication failed');
+
+        $this->shouldThrow(new \Exception('Authentication failed'))->duringSearch('The Prodigy');
     }
 }

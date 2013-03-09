@@ -59,7 +59,7 @@ abstract class AbstractService
 
         switch ($response->getStatusCode()) {
             case 401:
-                throw new AuthorizationFailedException($response->getReasonPhrase());
+                throw new \Exception($response->getReasonPhrase());
 
             default:
                 return $response->xml();
