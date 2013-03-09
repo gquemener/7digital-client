@@ -130,16 +130,16 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringdetails();
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringDetails();
     }
 
-    function its_details_method_should_throw_exception_if_the_query_has_not_been_set(
+    function its_details_method_should_throw_exception_if_the_trackId_has_not_been_set(
         $httpClient, $request
     )
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringdetails(array('pageSize' => 10));
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringDetails(array('pageSize' => 10));
     }
 
     function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
@@ -167,5 +167,50 @@ class Track extends ObjectBehavior
         $queryString->merge(array('trackId' => 456))->shouldBeCalled();
 
         $this->details(array('trackId' => 456));
+    }
+
+    function its_preview_method_should_throw_exception_if_no_argument_has_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringPreview();
+    }
+
+    function its_preview_method_should_throw_exception_if_the_trackId_has_not_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringPreview();
+    }
+
+    function its_preview_method_should_never_redirect(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('trackId' => 123, 'redirect' => 'false'))->shouldBeCalled();
+
+        $result = $this->preview(123);
+        $result->shouldBe(array());
+    }
+
+    function its_preview_method_should_use_an_array_argument_as_the_7digital_query_string(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('trackId' => 456, 'redirect' => 'false'))->shouldBeCalled();
+
+        $this->preview(array('trackId' => 456, 'redirect' => true));
     }
 }

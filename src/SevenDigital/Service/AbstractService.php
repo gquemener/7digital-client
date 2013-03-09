@@ -62,6 +62,7 @@ abstract class AbstractService
         $response = $request->send();
 
         switch ($response->getStatusCode()) {
+            case 302:
             case 401:
                 throw new \Exception($response->getReasonPhrase());
 

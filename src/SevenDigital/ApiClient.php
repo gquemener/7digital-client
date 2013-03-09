@@ -14,7 +14,8 @@ class ApiClient
     public function __construct($consumerKey, $version = '1.2')
     {
         $this->httpClient = new Client('http://api.7digital.com/{version}', array(
-            'version' => $version,
+            'version'          => $version,
+            'redirect.disable' => true,
         ));
         $this->consumerKey = $consumerKey;
     }
