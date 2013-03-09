@@ -3,25 +3,37 @@
 namespace SevenDigital;
 
 use Guzzle\Http\Client;
-use Guzzle\Plugin\Oauth\OauthPlugin;
+use Guzzle\Cache\DoctrineCacheAdapter;
+use Guzzle\Plugin\Cache\CachePlugin;
+use Doctrine\Common\Cache\ApcCache;
+use SevenDigital\EventListener\AddConsumerKeySubscriber;
 use SevenDigital\Service;
 
 class ApiClient
 {
     protected $httpClient;
-    protected $consumerKey;
 
-    public function __construct($consumerKey, $version = '1.2')
+    public function __construct($consumerKey, $cache = false, $version = '1.2')
     {
         $this->httpClient = new Client('http://api.7digital.com/{version}', array(
             'version'          => $version,
             'redirect.disable' => true,
         ));
-        $this->consumerKey = $consumerKey;
+
+        if ($cache) {
+            if (!$cache instanceof \Doctrine\Common\Cache\Cache) {
+                throw new \Exception('Provided cache does not implement "Doctrine\Common\Cache\Cache"');
+            }
+            $adapter    = new DoctrineCacheAdapter($cache);
+            $subscriber = new CachePlugin($adapter);
+            $this->httpClient->addSubscriber($subscriber);
+        }
+
+        $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($consumerKey));
     }
 
     public function getTrackService()
     {
-        return new Service\Track($this->httpClient, $this->consumerKey);
+        return new Service\Track($this->httpClient);
     }
 }

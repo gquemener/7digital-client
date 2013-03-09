@@ -4,18 +4,15 @@ namespace SevenDigital\Service;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
-use SevenDigital\EventListener\AddConsumerKeySubscriber;
 
 abstract class AbstractService
 {
     private $httpClient;
-    private $responseFactory;
     private $methods = array();
 
-    public function __construct(Client $httpClient, $consumerKey)
+    public function __construct(Client $httpClient)
     {
-        $this->httpClient      = $httpClient;
-        $this->consumerKey     = $consumerKey;
+        $this->httpClient = $httpClient;
 
         $this->configure();
     }
@@ -27,8 +24,6 @@ abstract class AbstractService
                 'Call to undefined method %s::%s().', get_class($this), $method
             ));
         }
-
-        $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($this->consumerKey));
 
         $request = $this->httpClient->createRequest(
             $this->methods[$method]['httpMethod'],
