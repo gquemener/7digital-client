@@ -123,4 +123,49 @@ class Track extends ObjectBehavior
 
         $this->chart(array('foo' => 'bar'))->shouldReturn(array());
     }
+
+    function its_details_method_should_throw_exception_if_no_argument_has_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringdetails();
+    }
+
+    function its_details_method_should_throw_exception_if_the_query_has_not_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringdetails(array('pageSize' => 10));
+    }
+
+    function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('trackId' => 123))->shouldBeCalled();
+
+        $result = $this->details(123);
+        $result->shouldBe(array());
+    }
+
+    function its_details_method_should_use_an_array_argument_as_the_7digital_query_string(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('trackId' => 456))->shouldBeCalled();
+
+        $this->details(array('trackId' => 456));
+    }
 }

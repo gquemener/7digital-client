@@ -24,5 +24,14 @@ $httpClient = new Client('http://api.7digital.com/{version}', array(
 $client = new ApiClient($httpClient, '**consumer_key**');
 
 $track = $client->getTrackService();
-$results = $track->search('Queen'); // Will return the api response parsed inside a SimpleXMLElement object
+
+$results = $track->search('Queen'); // Will return the api response parsed inside
+                                    // a SimpleXMLElement object
+
+$results = $track->search(array(
+ 'q'        => 'Queen', // Pass an array of parameters as described
+ 'pageSize' => 1        // in the 7 digital api documentation
+));
+
+$results = $track->details(/** a 7digital track id */);
 ```
