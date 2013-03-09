@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gquemener/7digital-client.png)](https://travis-ci.org/gquemener/7digital-client)
+
 Installation
 ============
 
