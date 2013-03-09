@@ -18,5 +18,6 @@ class Track extends AbstractService
 
             return is_array($params[0]) ? $params[0] : array('q' => $params[0]);
         });
+        $this->addMethod('chart', 'GET', function ($params) { return null; });
     }
 }

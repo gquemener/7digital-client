@@ -14,7 +14,6 @@ class Track extends ObjectBehavior
      */
     function let($httpClient, $request, $response, $queryString)
     {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
         $request->getQuery()->willReturn($queryString);
         $request->send()->willReturn($response);
 
@@ -29,41 +28,6 @@ class Track extends ObjectBehavior
     function it_should_be_named_track()
     {
         $this->getName()->shouldReturn('track');
-    }
-
-    function it_should_throw_exception_if_no_argument_has_been_set()
-    {
-        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch();
-    }
-
-    function it_should_throw_exception_if_the_query_has_not_been_set()
-    {
-        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch(array('pageSize' => 10));
-    }
-
-    function it_should_treat_non_array_argument_as_the_query(
-        $response, $queryString
-    )
-    {
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('q' => 'Genesis'))->shouldBeCalled();
-
-        $result = $this->search('Genesis');
-        $result->shouldBe(array());
-    }
-
-    function it_should_provide_array_argument_as_is_to_the_request(
-        $response, $queryString
-    )
-    {
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('q' => 'Genesis', 'pageSize' => 5))->shouldBeCalled();
-
-        $this->search(array('q' => 'Genesis', 'pageSize' => 5));
     }
 
     function it_should_throw_an_exception_for_undefined_method()
@@ -87,5 +51,76 @@ class Track extends ObjectBehavior
         $response->getReasonPhrase()->willReturn('Authentication failed');
 
         $this->shouldThrow(new \Exception('Authentication failed'))->duringSearch('The Prodigy');
+    }
+
+    function its_search_method_should_throw_exception_if_no_argument_has_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch();
+    }
+
+    function its_search_method_should_throw_exception_if_the_query_has_not_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+
+        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch(array('pageSize' => 10));
+    }
+
+    function its_search_method_should_use_a_scalar_argument_as_the_query_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('q' => 'Genesis'))->shouldBeCalled();
+
+        $result = $this->search('Genesis');
+        $result->shouldBe(array());
+    }
+
+    function its_search_method_should_use_an_array_argument_as_the_7digital_query_string(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('q' => 'Genesis', 'pageSize' => 5))->shouldBeCalled();
+
+        $this->search(array('q' => 'Genesis', 'pageSize' => 5));
+    }
+
+    function its_chart_method_should_fetch_7digital_chart(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(null)->shouldBeCalled();
+
+        $this->chart()->shouldReturn(array());
+    }
+
+    function its_chart_method_should_not_pass_given_arguments_to_the_request(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(null)->shouldBeCalled();
+
+        $this->chart(array('foo' => 'bar'))->shouldReturn(array());
     }
 }
