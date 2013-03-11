@@ -20,5 +20,24 @@ class Artist extends Service
 
             return is_array($params[0]) ? $params[0] : array('letter' => $params[0]);
         });
+        $this->addMethod('chart', 'GET', function ($params) {
+            if (!isset($params[0])) {
+                return array();
+            }
+
+            if (!is_array($params[0])) {
+                throw new \InvalidArgumentException('Argument must be provided as an array.');
+            }
+
+            if (isset($params[0]['period']) && !in_array($params[0]['period'], array('week', 'month', 'day'))) {
+                throw new \InvalidArgumentException('Period parameter must be one of "week, month, day".');
+            }
+
+            if (isset($params[0]['toDate']) && $params[0]['toDate'] instanceof \DateTime) {
+                $params[0]['toDate'] = $params[0]['toDate']->format('Ymd');
+            }
+
+            return $params[0];
+        });
     }
 }

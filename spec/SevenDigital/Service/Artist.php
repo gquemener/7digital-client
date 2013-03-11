@@ -90,4 +90,61 @@ class Artist extends ObjectBehavior
 
         $this->browse(array('letter' => 'c', 'pageSize' => 5));
     }
+
+    function its_chart_method_should_throw_exception_if_argument_is_not_an_array(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+
+        $this->shouldThrow(new \InvalidArgumentException('Argument must be provided as an array.'))->duringChart(123);
+    }
+
+    function its_chart_method_should_throw_exception_if_period_parameter_has_an_incorrect_value(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+
+        $this->shouldThrow(new \InvalidArgumentException('Period parameter must be one of "week, month, day".'))->duringChart(array('period' => 'someday'));
+    }
+
+    function its_chart_method_should_convert_toDate_to_string_when_it_is_a_datetime(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('toDate' => '20130525' ))->shouldBeCalled();
+
+        $this->chart(array('toDate' => new \DateTime('2013-05-25')));
+    }
+
+    function its_chart_method_should_use_an_array_argument_as_the_7digital_query_string(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('period' => 'week', 'toDate' => '20130525'))->shouldBeCalled();
+
+        $this->chart(array('period' => 'week', 'toDate' => '20130525'));
+    }
+
+    function its_chart_method_should_not_have_required_parameters(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array())->shouldBeCalled();
+
+        $this->chart();
+    }
 }
