@@ -147,4 +147,49 @@ class Artist extends ObjectBehavior
 
         $this->chart();
     }
+
+    function its_details_method_should_throw_exception_if_no_argument_has_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringDetails();
+    }
+
+    function its_details_method_should_throw_exception_if_the_artistId_has_not_been_set(
+        $httpClient, $request
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringDetails(array('pageSize' => 10));
+    }
+
+    function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+
+        $result = $this->details(123);
+        $result->shouldBe(array());
+    }
+
+    function its_details_method_should_use_an_array_argument_as_the_7digital_query_string(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+        $response->xml()->willReturn(array());
+
+        $queryString->merge(array('artistId' => 456))->shouldBeCalled();
+
+        $this->details(array('artistId' => 456));
+    }
 }
