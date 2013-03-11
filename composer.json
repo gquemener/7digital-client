@@ -11,7 +11,6 @@
     "require": {
         "php": ">=5.3.3",
         "guzzle/guzzle": "~3.1",
-        "symfony/config": "~2.2",
         "doctrine/common": "~2.3"
     },
     "require-dev": {
