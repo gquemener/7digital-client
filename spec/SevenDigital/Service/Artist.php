@@ -52,7 +52,7 @@ class Artist extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "letter" parameter'))->duringBrowse();
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "letter" parameter'))->duringBrowse();
     }
 
     function its_browse_method_should_throw_exception_if_the_letter_has_not_been_set(
@@ -61,7 +61,7 @@ class Artist extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "letter" parameter'))->duringBrowse(array('pageSize' => 10));
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "letter" parameter'))->duringBrowse(array('pageSize' => 10));
     }
 
     function its_browse_method_should_use_a_scalar_argument_as_the_query_parameter(

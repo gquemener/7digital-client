@@ -15,7 +15,7 @@ class Artist extends Service
     {
         $this->addMethod('browse', 'GET', function ($params) {
             if (!isset($params[0]) || (is_array($params[0]) && !array_key_exists('letter', $params[0]))) {
-                throw new \Exception('You must provide at least a "letter" parameter');
+                throw new \InvalidArgumentException('You must provide at least a "letter" parameter');
             }
 
             return is_array($params[0]) ? $params[0] : array('letter' => $params[0]);

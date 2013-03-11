@@ -4,6 +4,7 @@ namespace SevenDigital;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
+use SevenDigital\Exception\UnknownMethodException;
 
 abstract class Service
 {
@@ -20,7 +21,7 @@ abstract class Service
     public function __call($method, $arguments)
     {
         if (!isset($this->methods[$method])) {
-            throw new \Exception(sprintf(
+            throw new UnknownMethodException(sprintf(
                 'Call to undefined method %s::%s().', get_class($this), $method
             ));
         }

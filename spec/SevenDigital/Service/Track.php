@@ -3,6 +3,7 @@
 namespace spec\SevenDigital\Service;
 
 use PHPSpec2\ObjectBehavior;
+use SevenDigital\Exception\UnknownMethodException;
 
 class Track extends ObjectBehavior
 {
@@ -32,7 +33,7 @@ class Track extends ObjectBehavior
 
     function it_should_throw_an_exception_for_undefined_method()
     {
-        $this->shouldThrow(new \Exception('Call to undefined method SevenDigital\Service\Track::invalidMethod().'))->duringInvalidMethod('incredibru');
+        $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Track::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
     function it_should_throw_an_exception_if_authorization_failed(
@@ -52,7 +53,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/search')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch();
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "q" parameter'))->duringSearch();
     }
 
     function its_search_method_should_throw_exception_if_the_query_has_not_been_set(
@@ -61,7 +62,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/search')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "q" parameter'))->duringSearch(array('pageSize' => 10));
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "q" parameter'))->duringSearch(array('pageSize' => 10));
     }
 
     function its_search_method_should_use_a_scalar_argument_as_the_query_parameter(
@@ -123,7 +124,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringDetails();
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringDetails();
     }
 
     function its_details_method_should_throw_exception_if_the_trackId_has_not_been_set(
@@ -132,7 +133,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringDetails(array('pageSize' => 10));
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringDetails(array('pageSize' => 10));
     }
 
     function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
@@ -168,7 +169,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringPreview();
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringPreview();
     }
 
     function its_preview_method_should_throw_exception_if_the_trackId_has_not_been_set(
@@ -177,7 +178,7 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
 
-        $this->shouldThrow(new \Exception('You must provide at least a "trackId" parameter'))->duringPreview();
+        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringPreview();
     }
 
     function its_preview_method_should_never_redirect(
