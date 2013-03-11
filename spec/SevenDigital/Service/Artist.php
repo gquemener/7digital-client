@@ -46,204 +46,78 @@ class Artist extends ObjectBehavior
         $this->shouldThrow(new \Exception('Authentication failed'))->duringBrowse('P');
     }
 
-    function its_browse_method_should_throw_exception_if_no_argument_has_been_set(
+    function its_browse_method_should_create_a_GET_request_to_the_browse_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
+        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "letter" parameter'))->duringBrowse();
+        $this->browse();
     }
 
-    function its_browse_method_should_throw_exception_if_the_letter_has_not_been_set(
-        $httpClient, $request
+    function its_browse_method_should_use_first_argument_as_the_letter_parameter(
+        $httpClient, $request, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "letter" parameter'))->duringBrowse(array('pageSize' => 10));
-    }
-
-    function its_browse_method_should_use_a_scalar_argument_as_the_query_parameter(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
         $queryString->merge(array('letter' => 'b'))->shouldBeCalled();
 
-        $result = $this->browse('b');
-        $result->shouldBe(array());
+        $this->browse('b');
     }
 
-    function its_browse_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('letter' => 'c', 'pageSize' => 5))->shouldBeCalled();
-
-        $this->browse(array('letter' => 'c', 'pageSize' => 5));
-    }
-
-    function its_chart_method_should_throw_exception_if_argument_is_not_an_array(
+    function its_chart_method_should_create_a_GET_request_to_the_chart_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('Argument must be provided as an array.'))->duringChart(123);
-    }
-
-    function its_chart_method_should_throw_exception_if_period_parameter_has_an_incorrect_value(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('Period parameter must be one of "week, month, day".'))->duringChart(array('period' => 'someday'));
-    }
-
-    function its_chart_method_should_convert_toDate_to_string_when_it_is_a_datetime(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('toDate' => '20130525' ))->shouldBeCalled();
-
-        $this->chart(array('toDate' => new \DateTime('2013-05-25')));
-    }
-
-    function its_chart_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('period' => 'week', 'toDate' => '20130525'))->shouldBeCalled();
-
-        $this->chart(array('period' => 'week', 'toDate' => '20130525'));
-    }
-
-    function its_chart_method_should_not_have_required_parameters(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array())->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request)->shouldBeCalled();
 
         $this->chart();
     }
 
-    function its_details_method_should_throw_exception_if_no_argument_has_been_set(
+    function its_chart_method_should_throw_exception_when_given_parameter_is_not_an_array(
+        $httpClient, $request, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+
+        $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Artist::chart() has no default parameter.'))->duringChart('foo');
+    }
+
+    function its_details_method_should_create_a_GET_request_to_the_details_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringDetails();
+        $this->details();
     }
 
-    function its_details_method_should_throw_exception_if_the_artistId_has_not_been_set(
+    function its_details_method_should_use_first_argument_as_the_artist_id_parameter(
+        $httpClient, $request, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+        $queryString->merge(array('artistId' => 42))->shouldBeCalled();
+
+        $this->details(42);
+    }
+
+    function its_releases_method_should_create_a_GET_request_to_the_releases_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
+        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringDetails(array('pageSize' => 10));
+        $this->releases();
     }
 
-    function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
-        $httpClient, $request, $response, $queryString
+    function its_releases_method_should_use_first_argument_as_the_artist_id_parameter(
+        $httpClient, $request, $queryString
     )
     {
-        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
+        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
         $queryString->merge(array('artistId' => 123))->shouldBeCalled();
 
-        $result = $this->details(123);
-        $result->shouldBe(array());
-    }
-
-    function its_details_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('artistId' => 456))->shouldBeCalled();
-
-        $this->details(array('artistId' => 456));
-    }
-
-    function its_releases_method_should_throw_exception_if_no_argument_has_been_set(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringReleases();
-    }
-
-    function its_releases_method_should_throw_exception_if_the_artistId_has_not_been_set(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least an "artistId" parameter'))->duringReleases(array('pageSize' => 10));
-    }
-
-    function its_releases_method_should_throw_exception_if_type_parameter_has_an_incorrect_value(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('Type parameter must be one of "album, single, video".'))->duringReleases(array('artistId' => 123, 'type' => 'EP'));
-    }
-
-    function its_releases_method_should_use_a_scalar_argument_as_the_query_parameter(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
-
-        $result = $this->releases(123);
-        $result->shouldBe(array());
-    }
-
-    function its_releases_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('artistId' => 456))->shouldBeCalled();
-
-        $this->releases(array('artistId' => 456));
+        $this->releases(123);
     }
 }

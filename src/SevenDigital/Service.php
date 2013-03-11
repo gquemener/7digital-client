@@ -31,9 +31,8 @@ abstract class Service
             sprintf('%s/%s', $this->getName(), $method)
         );
 
-        $request->getQuery()->merge(
-            $this->methods[$method]['getParameters']($arguments)
-        );
+        $params = $this->buildParameters($method, $arguments);
+        $request->getQuery()->merge($params);
 
         return $this->request($request);
     }
@@ -41,16 +40,30 @@ abstract class Service
     abstract public function configure();
     abstract public function getName();
 
-    protected function addMethod($name, $httpMethod, \Closure $getParameters = null)
+    protected function addMethod($name, $httpMethod = 'GET', $defaultParameter = null)
     {
-        if (null === $getParameters) {
-            $getParameters = function ($params) { return $params; };
+        $this->methods[$name] = array(
+            'httpMethod'       => $httpMethod,
+            'defaultParameter' => $defaultParameter,
+        );
+    }
+
+    private function buildParameters($method, $arguments)
+    {
+        $argument = array_key_exists(0, $arguments) ? $arguments[0] : array();
+
+        if (is_array($argument)) {
+            return $argument;
         }
 
-        $this->methods[$name] = array(
-            'httpMethod'    => $httpMethod,
-            'getParameters' => $getParameters,
-        );
+        if (null === $defaultParameter = $this->methods[$method]['defaultParameter']) {
+            throw new \InvalidArgumentException(sprintf(
+                'Impossible to match "%s" to a parameter, because method %s::%s() has no default parameter.',
+                $argument, get_class($this), $method
+            ));
+        }
+
+        return array($defaultParameter => $argument);
     }
 
     private function request(RequestInterface $request)

@@ -47,164 +47,59 @@ class Track extends ObjectBehavior
         $this->shouldThrow(new \Exception('Authentication failed'))->duringSearch('The Prodigy');
     }
 
-    function its_search_method_should_throw_exception_if_no_argument_has_been_set(
+    function its_search_method_should_create_a_GET_request_to_the_search_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "q" parameter'))->duringSearch();
+        $this->search();
     }
 
-    function its_search_method_should_throw_exception_if_the_query_has_not_been_set(
+    function its_search_method_should_use_first_argument_as_the_q_parameter(
+        $httpClient, $request, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $queryString->merge(array('q' => 'The Prodigy'))->shouldBeCalled();
+
+        $this->search('The Prodigy');
+    }
+
+    function its_chart_method_should_create_a_GET_request_to_the_chart_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $httpClient->createRequest('GET', 'track/chart')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "q" parameter'))->duringSearch(array('pageSize' => 10));
+        $this->chart();
     }
 
-    function its_search_method_should_use_a_scalar_argument_as_the_query_parameter(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('q' => 'Genesis'))->shouldBeCalled();
-
-        $result = $this->search('Genesis');
-        $result->shouldBe(array());
-    }
-
-    function its_search_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('q' => 'Genesis', 'pageSize' => 5))->shouldBeCalled();
-
-        $this->search(array('q' => 'Genesis', 'pageSize' => 5));
-    }
-
-    function its_chart_method_should_fetch_7digital_chart(
-        $httpClient, $request, $response, $queryString
+    function its_chart_method_should_throw_exception_when_given_parameter_is_not_an_array(
+        $httpClient, $request, $queryString
     )
     {
         $httpClient->createRequest('GET', 'track/chart')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
 
-        $queryString->merge(null)->shouldBeCalled();
-
-        $this->chart()->shouldReturn(array());
+        $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Track::chart() has no default parameter.'))->duringChart('foo');
     }
 
-    function its_chart_method_should_not_pass_given_arguments_to_the_request(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/chart')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(null)->shouldBeCalled();
-
-        $this->chart(array('foo' => 'bar'))->shouldReturn(array());
-    }
-
-    function its_details_method_should_throw_exception_if_no_argument_has_been_set(
+    function its_details_method_should_create_a_GET_request_to_the_details_endpoint(
         $httpClient, $request
     )
     {
-        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
+        $httpClient->createRequest('GET', 'track/details')->willReturn($request)->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringDetails();
+        $this->details();
     }
 
-    function its_details_method_should_throw_exception_if_the_trackId_has_not_been_set(
-        $httpClient, $request
+    function its_details_method_should_use_first_argument_as_the_track_id_parameter(
+        $httpClient, $request, $queryString
     )
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringDetails(array('pageSize' => 10));
-    }
-
-    function its_details_method_should_use_a_scalar_argument_as_the_query_parameter(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
         $queryString->merge(array('trackId' => 123))->shouldBeCalled();
 
-        $result = $this->details(123);
-        $result->shouldBe(array());
-    }
-
-    function its_details_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/details')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('trackId' => 456))->shouldBeCalled();
-
-        $this->details(array('trackId' => 456));
-    }
-
-    function its_preview_method_should_throw_exception_if_no_argument_has_been_set(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringPreview();
-    }
-
-    function its_preview_method_should_throw_exception_if_the_trackId_has_not_been_set(
-        $httpClient, $request
-    )
-    {
-        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
-
-        $this->shouldThrow(new \InvalidArgumentException('You must provide at least a "trackId" parameter'))->duringPreview();
-    }
-
-    function its_preview_method_should_never_redirect(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('trackId' => 123, 'redirect' => 'false'))->shouldBeCalled();
-
-        $result = $this->preview(123);
-        $result->shouldBe(array());
-    }
-
-    function its_preview_method_should_use_an_array_argument_as_the_7digital_query_string(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->xml()->willReturn(array());
-
-        $queryString->merge(array('trackId' => 456, 'redirect' => 'false'))->shouldBeCalled();
-
-        $this->preview(array('trackId' => 456, 'redirect' => true));
+        $this->details(123);
     }
 }
