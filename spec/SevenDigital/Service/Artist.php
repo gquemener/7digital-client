@@ -128,4 +128,67 @@ class Artist extends ObjectBehavior
 
         $this->releases(123);
     }
+
+    function its_search_method_should_create_a_GET_request_to_the_search_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/search')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->search();
+    }
+
+    function its_search_method_should_use_first_argument_as_the_q_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/search')->willReturn($request);
+        $queryString->merge(array('q' => 'Lenny Kravitz'))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->search('Lenny Kravitz');
+    }
+
+    function its_toptracks_method_should_create_a_GET_request_to_the_toptracks_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/toptracks')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->toptracks();
+    }
+
+    function its_toptracks_method_should_use_first_argument_as_the_artist_id_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/toptracks')->willReturn($request);
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->toptracks(123);
+    }
+
+    function its_similar_method_should_create_a_GET_request_to_the_similar_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/similar')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->similar();
+    }
+
+    function its_similar_method_should_use_first_argument_as_the_artist_id_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/similar')->willReturn($request);
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->similar(123);
+    }
 }

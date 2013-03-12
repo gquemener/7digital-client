@@ -17,5 +17,8 @@ class Artist extends Service
         $this->addMethod('chart');
         $this->addMethod('details', 'GET', 'artistId');
         $this->addMethod('releases', 'GET', 'artistId');
+        $this->addMethod('search', 'GET', 'q');
+        $this->addMethod('toptracks', 'GET', 'artistId');
+        $this->addMethod('similar', 'GET', 'artistId');
     }
 }
