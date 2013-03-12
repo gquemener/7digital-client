@@ -191,4 +191,45 @@ class Artist extends ObjectBehavior
 
         $this->similar(123);
     }
+
+    function its_tags_method_should_create_a_GET_request_to_the_tags_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/tags')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->tags();
+    }
+
+    function its_tags_method_should_throw_exception_when_given_parameter_is_not_an_array(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/tags')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
+
+        $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Artist::tags() has no default parameter.'))->duringTags('foo');
+    }
+
+    function its_byTopTags_method_should_create_a_GET_request_to_the_bytag_top_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/bytag/top')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->byTopTags();
+    }
+
+    function its_byTopTags_method_should_use_first_argument_as_the_tags_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'artist/bytag/top')->willReturn($request);
+        $queryString->merge(array('tags' => 'rock, pop, 2000s'))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->byTopTags('rock, pop, 2000s');
+    }
 }

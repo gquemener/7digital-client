@@ -19,5 +19,8 @@ class Release extends Service
         $this->addMethod('recommend', 'GET', 'releaseId');
         $this->addMethod('search', 'GET', 'q');
         $this->addMethod('tracks', 'GET', 'releaseId');
+        $this->addMethod('tags');
+        $this->addMethod('byNewTags', 'GET', 'tags', 'bytag/new');
+        $this->addMethod('byTopTags', 'GET', 'tags', 'bytag/top');
     }
 }

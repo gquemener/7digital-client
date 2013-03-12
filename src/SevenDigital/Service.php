@@ -28,7 +28,7 @@ abstract class Service
 
         $request = $this->httpClient->createRequest(
             $this->methods[$method]['httpMethod'],
-            sprintf('%s/%s', $this->getName(), $method)
+            sprintf('%s/%s', $this->getName(), $this->methods[$method]['endpoint'] ?: $method)
         );
 
         $params = $this->buildParameters($method, $arguments);
@@ -40,11 +40,12 @@ abstract class Service
     abstract public function configure();
     abstract public function getName();
 
-    protected function addMethod($name, $httpMethod = 'GET', $defaultParameter = null)
+    protected function addMethod($name, $httpMethod = 'GET', $defaultParameter = null, $endpoint = null)
     {
         $this->methods[$name] = array(
             'httpMethod'       => $httpMethod,
             'defaultParameter' => $defaultParameter,
+            'endpoint'         => $endpoint,
         );
     }
 
