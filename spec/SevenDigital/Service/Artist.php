@@ -3,6 +3,7 @@
 namespace spec\SevenDigital\Service;
 
 use PHPSpec2\ObjectBehavior;
+use SevenDigital\Exception\UnknownMethodException;
 
 class Artist extends ObjectBehavior
 {
@@ -32,7 +33,7 @@ class Artist extends ObjectBehavior
 
     function it_should_throw_an_exception_for_undefined_method()
     {
-        $this->shouldThrow(new \Exception('Call to undefined method SevenDigital\Service\Artist::invalidMethod().'))->duringInvalidMethod('incredibru');
+        $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Artist::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
     function it_should_throw_an_exception_if_authorization_failed(

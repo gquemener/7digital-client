@@ -3,6 +3,7 @@
 namespace spec\SevenDigital\Service;
 
 use PHPSpec2\ObjectBehavior;
+use SevenDigital\Exception\UnknownMethodException;
 
 class Release extends ObjectBehavior
 {
@@ -32,7 +33,7 @@ class Release extends ObjectBehavior
 
     function it_should_throw_an_exception_for_undefined_method()
     {
-        $this->shouldThrow(new \Exception('Call to undefined method SevenDigital\Service\Release::invalidMethod().'))->duringInvalidMethod('incredibru');
+        $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Release::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
     function it_should_throw_an_exception_if_authorization_failed(
