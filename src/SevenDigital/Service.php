@@ -26,9 +26,10 @@ abstract class Service
             ));
         }
 
+        $endpoint = null !== $this->methods[$method]['endpoint'] ? $this->methods[$method]['endpoint'] : $method;
         $request = $this->httpClient->createRequest(
             $this->methods[$method]['httpMethod'],
-            sprintf('%s/%s', $this->getName(), $this->methods[$method]['endpoint'] ?: $method)
+            sprintf('%s/%s', $this->getName(), $endpoint)
         );
 
         $params = $this->buildParameters($method, $arguments);

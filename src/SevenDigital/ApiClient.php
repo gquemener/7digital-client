@@ -45,4 +45,9 @@ class ApiClient
     {
         return new Service\Release($this->httpClient);
     }
+
+    public function getTagService()
+    {
+        return new Service\Tag($this->httpClient);
+    }
 }

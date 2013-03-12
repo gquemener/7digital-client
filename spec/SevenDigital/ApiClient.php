@@ -28,4 +28,10 @@ class ApiClient extends ObjectBehavior
         $service = $this->getReleaseService();
         $service->shouldBeAnInstanceOf('SevenDigital\Service\Release');
     }
+
+    function it_should_provide_access_to_the_tag_service()
+    {
+        $service = $this->getTagService();
+        $service->shouldBeAnInstanceOf('SevenDigital\Service\Tag');
+    }
 }
