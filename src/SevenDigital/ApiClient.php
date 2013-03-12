@@ -40,4 +40,9 @@ class ApiClient
     {
         return new Service\Artist($this->httpClient);
     }
+
+    public function getReleaseService()
+    {
+        return new Service\Release($this->httpClient);
+    }
 }
