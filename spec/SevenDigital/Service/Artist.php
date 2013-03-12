@@ -37,7 +37,7 @@ class Artist extends ObjectBehavior
     }
 
     function it_should_throw_an_exception_if_authorization_failed(
-        $httpClient, $request, $response, $response, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
