@@ -12,7 +12,7 @@ class Artist extends ObjectBehavior
      * @param Guzzle\Http\Message\Response         $response
      * @param Guzzle\Http\QueryString              $queryString
      */
-    function let($httpClient, $request, $response, $queryString)
+    function let($httpClient, $request, $response, $response, $queryString)
     {
         $request->getQuery()->willReturn($queryString);
         $request->send()->willReturn($response);
@@ -36,7 +36,7 @@ class Artist extends ObjectBehavior
     }
 
     function it_should_throw_an_exception_if_authorization_failed(
-        $httpClient, $request, $response, $queryString
+        $httpClient, $request, $response, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
@@ -47,76 +47,84 @@ class Artist extends ObjectBehavior
     }
 
     function its_browse_method_should_create_a_GET_request_to_the_browse_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->browse();
     }
 
     function its_browse_method_should_use_first_argument_as_the_letter_parameter(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
         $queryString->merge(array('letter' => 'b'))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->browse('b');
     }
 
     function its_chart_method_should_create_a_GET_request_to_the_chart_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'artist/chart')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->chart();
     }
 
     function its_chart_method_should_throw_exception_when_given_parameter_is_not_an_array(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
 
         $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Artist::chart() has no default parameter.'))->duringChart('foo');
     }
 
     function its_details_method_should_create_a_GET_request_to_the_details_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'artist/details')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->details();
     }
 
     function its_details_method_should_use_first_argument_as_the_artist_id_parameter(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
         $queryString->merge(array('artistId' => 42))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->details(42);
     }
 
     function its_releases_method_should_create_a_GET_request_to_the_releases_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'artist/releases')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->releases();
     }
 
     function its_releases_method_should_use_first_argument_as_the_artist_id_parameter(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
         $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->releases(123);
     }

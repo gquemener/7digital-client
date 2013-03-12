@@ -48,58 +48,85 @@ class Track extends ObjectBehavior
     }
 
     function its_search_method_should_create_a_GET_request_to_the_search_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'track/search')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->search();
     }
 
     function its_search_method_should_use_first_argument_as_the_q_parameter(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'track/search')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
         $queryString->merge(array('q' => 'The Prodigy'))->shouldBeCalled();
 
         $this->search('The Prodigy');
     }
 
     function its_chart_method_should_create_a_GET_request_to_the_chart_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'track/chart')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->chart();
     }
 
     function its_chart_method_should_throw_exception_when_given_parameter_is_not_an_array(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'track/chart')->willReturn($request);
+        $response->getStatusCode()->willReturn(200);
 
         $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Track::chart() has no default parameter.'))->duringChart('foo');
     }
 
     function its_details_method_should_create_a_GET_request_to_the_details_endpoint(
-        $httpClient, $request
+        $httpClient, $request, $response
     )
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->details();
     }
 
     function its_details_method_should_use_first_argument_as_the_track_id_parameter(
-        $httpClient, $request, $queryString
+        $httpClient, $request, $response, $queryString
     )
     {
         $httpClient->createRequest('GET', 'track/details')->willReturn($request);
         $queryString->merge(array('trackId' => 123))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
 
         $this->details(123);
+    }
+
+    function its_preview_method_should_create_a_GET_request_to_the_preview_endpoint(
+        $httpClient, $request, $response
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request)->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->preview();
+    }
+
+    function its_preview_method_should_use_first_argument_as_the_track_id_parameter(
+        $httpClient, $request, $response, $queryString
+    )
+    {
+        $httpClient->createRequest('GET', 'track/preview')->willReturn($request);
+        $queryString->merge(array('trackId' => 123))->shouldBeCalled();
+        $response->getStatusCode()->willReturn(200);
+
+        $this->preview(123);
     }
 }

@@ -70,13 +70,19 @@ abstract class Service
     {
         $response = $request->send();
 
-        switch ($response->getStatusCode()) {
-            case 302:
-            case 401:
-                throw new \Exception($response->getReasonPhrase());
+        if (200 !== $response->getStatusCode()) {
+            throw new \Exception($response->getReasonPhrase());
+        }
+
+        switch (true) {
+            case $response->isContentType('xml'):
+                return $response->xml();
+
+            case $response->isContentType('audio'):
+                $response->getBody()->getStream();
 
             default:
-                return $response->xml();
+                return $response->getBody();
         }
     }
 }
