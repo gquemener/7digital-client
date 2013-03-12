@@ -14,7 +14,7 @@ class Artist extends Service
     public function configure()
     {
         $this->addMethod('browse', 'GET', 'letter');
-        $this->addMethod('chart', 'GET');
+        $this->addMethod('chart');
         $this->addMethod('details', 'GET', 'artistId');
         $this->addMethod('releases', 'GET', 'artistId');
     }
