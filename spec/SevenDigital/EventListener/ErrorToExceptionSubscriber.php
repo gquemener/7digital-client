@@ -5,8 +5,11 @@ namespace spec\SevenDigital\EventListener;
 use PHPSpec2\ObjectBehavior;
 use SevenDigital\Exception\InvalidOrMissingInputParametersException;
 use SevenDigital\Exception\InvalidResourceReferenceException;
+use SevenDigital\Exception\UserCardErrorException;
+use SevenDigital\Exception\InternalServerErrorException;
+use SevenDigital\Exception\APIErrorException;
 
-class ErrorToExceptionListener extends ObjectBehavior
+class ErrorToExceptionSubscriber extends ObjectBehavior
 {
     /**
      * @param Guzzle\Common\Event          $event
@@ -76,5 +79,56 @@ XML
         ));
 
         $this->shouldThrow(new InvalidResourceReferenceException('Resource cannot be found', 2001))->duringOnRequestSuccess($event);
+    }
+
+    function it_should_throw_a_user_card_error_exception_when_error_code_starts_with_3(
+        $event, $response
+    )
+    {
+        $response->xml()->willReturn(new \SimpleXMLElement(
+<<<XML
+            <response status="error" version="1.2">
+                <error code="3001">
+                  <errorMessage>The user's card has expired</errorMessage>
+                </error>
+            </response>
+XML
+        ));
+
+        $this->shouldThrow(new UserCardErrorException('The user\'s card has expired', 3001))->duringOnRequestSuccess($event);
+    }
+
+    function it_should_throw_a_7digital_API_application_error_exception_when_error_code_starts_with_7(
+        $event, $response
+    )
+    {
+        $response->xml()->willReturn(new \SimpleXMLElement(
+<<<XML
+            <response status="error" version="1.2">
+                <error code="7001">
+                  <errorMessage>Unable to perform action</errorMessage>
+                </error>
+            </response>
+XML
+        ));
+
+        $this->shouldThrow(new APIErrorException('Unable to perform action', 7001))->duringOnRequestSuccess($event);
+    }
+
+    function it_should_throw_an_internal_server_error_exception_when_error_code_starts_with_9(
+        $event, $response
+    )
+    {
+        $response->xml()->willReturn(new \SimpleXMLElement(
+<<<XML
+            <response status="error" version="1.2">
+                <error code="9001">
+                  <errorMessage>Unexpected internal server error</errorMessage>
+                </error>
+            </response>
+XML
+        ));
+
+        $this->shouldThrow(new InternalServerErrorException('Unexpected internal server error', 9001))->duringOnRequestSuccess($event);
     }
 }

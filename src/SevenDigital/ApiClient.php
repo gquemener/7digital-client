@@ -7,6 +7,7 @@ use Guzzle\Cache\DoctrineCacheAdapter;
 use Guzzle\Plugin\Cache\CachePlugin;
 use Doctrine\Common\Cache\ApcCache;
 use SevenDigital\EventListener\AddConsumerKeySubscriber;
+use SevenDigital\EventListener\ErrorToExceptionSubscriber;
 use SevenDigital\Service;
 
 class ApiClient
@@ -29,6 +30,7 @@ class ApiClient
         }
 
         $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($consumerKey));
+        $this->httpClient->addSubscriber(new ErrorToExceptionSubscriber);
     }
 
     public function getTrackService()
