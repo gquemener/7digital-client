@@ -18,7 +18,7 @@ class Track extends ObjectBehavior
         $request->getQuery()->willReturn($queryString);
         $request->send()->willReturn($response);
 
-        $this->beConstructedWith($httpClient, 'consumer_key');
+        $this->beConstructedWith($httpClient);
     }
 
     function it_should_be_an_api_service()
