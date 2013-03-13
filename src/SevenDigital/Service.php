@@ -4,7 +4,10 @@ namespace SevenDigital;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
+use Guzzle\Http\Message\Response;
+use Guzzle\Http\Exception\BadResponseException;
 use SevenDigital\Exception\UnknownMethodException;
+use SevenDigital\Exception\Exception;
 
 abstract class Service
 {
@@ -70,21 +73,26 @@ abstract class Service
 
     private function request(RequestInterface $request)
     {
-        $response = $request->send();
-
-        if (200 !== $response->getStatusCode()) {
-            throw new \Exception($response->getReasonPhrase());
+        try {
+            $response = $request->send();
+        } catch (BadResponseException $e) {
+            throw new Exception(sprintf(
+                '7digital API responded with an error %d.',
+                $e->getResponse()->getStatusCode()
+            ), 0, $e);
         }
 
-        switch (true) {
-            case $response->isContentType('xml'):
-                return $response->xml();
+        return $this->getContent($response);
+    }
 
-            case $response->isContentType('audio'):
-                $response->getBody()->getStream();
-
-            default:
-                return $response->getBody();
+    private function getContent(Response $response)
+    {
+        if ($response->isContentType('xml')) {
+            return $response->xml();
+        } else if ($response->isContentType('audio')) {
+            return $response->getBody()->getStream();
+        } else {
+            return $response->getBody();
         }
     }
 }

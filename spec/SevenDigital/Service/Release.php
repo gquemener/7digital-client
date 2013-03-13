@@ -36,17 +36,6 @@ class Release extends ObjectBehavior
         $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Release::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
-    function it_should_throw_an_exception_if_authorization_failed(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'release/bydate')->willReturn($request);
-        $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
-
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringBydate();
-    }
-
     function its_bydate_method_should_create_a_GET_request_to_the_bydate_endpoint(
         $httpClient, $request, $response
     )
