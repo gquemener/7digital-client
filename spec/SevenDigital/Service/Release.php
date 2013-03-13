@@ -13,7 +13,7 @@ class Release extends ObjectBehavior
      * @param Guzzle\Http\Message\Response         $response
      * @param Guzzle\Http\QueryString              $queryString
      */
-    function let($httpClient, $request, $response, $response, $queryString)
+    function let($httpClient, $request, $response, $queryString)
     {
         $request->getQuery()->willReturn($queryString);
         $request->send()->willReturn($response);
