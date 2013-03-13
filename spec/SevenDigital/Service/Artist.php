@@ -4,7 +4,6 @@ namespace spec\SevenDigital\Service;
 
 use PHPSpec2\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
-use SevenDigital\Exception\UnauthorizedException;
 
 class Artist extends ObjectBehavior
 {

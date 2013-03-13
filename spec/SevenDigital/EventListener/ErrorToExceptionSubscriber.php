@@ -32,6 +32,16 @@ class ErrorToExceptionSubscriber extends ObjectBehavior
         ));
     }
 
+    function it_should_do_nothing_if_the_response_content_type_is_not_xml(
+        $event, $response
+    )
+    {
+        $response->isContentType('xml')->willReturn(false);
+        $response->xml()->shouldNotBeCalled();
+
+        $this->onRequestSuccess($event);
+    }
+
     function it_should_do_nothing_if_the_response_content_status_is_ok(
         $event, $response
     )

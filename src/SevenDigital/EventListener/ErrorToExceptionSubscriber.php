@@ -22,20 +22,24 @@ class ErrorToExceptionSubscriber implements EventSubscriberInterface
 
     public function onRequestSuccess(Event $event)
     {
-        $response = $event['response']->xml();
+        $response = $event['response'];
+        if (false === $response->isContentType('xml')) {
+            return;
+        }
 
-        if ($this->hasError($response)) {
-            switch ($this->getErrorCodeCategory($response)) {
+        $xml = $response->xml();
+        if ($this->hasError($xml)) {
+            switch ($this->getErrorCodeCategory($xml)) {
                 case '1':
-                    throw new InvalidOrMissingInputParametersException($this->getErrorMessage($response), $this->getErrorCode($response));
+                    throw new InvalidOrMissingInputParametersException($this->getErrorMessage($xml), $this->getErrorCode($xml));
                 case '2':
-                    throw new InvalidResourceReferenceException($this->getErrorMessage($response), $this->getErrorCode($response));
+                    throw new InvalidResourceReferenceException($this->getErrorMessage($xml), $this->getErrorCode($xml));
                 case '3':
-                    throw new UserCardErrorException($this->getErrorMessage($response), $this->getErrorCode($response));
+                    throw new UserCardErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
                 case '7':
-                    throw new APIErrorException($this->getErrorMessage($response), $this->getErrorCode($response));
+                    throw new APIErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
                 case '9':
-                    throw new InternalServerErrorException($this->getErrorMessage($response), $this->getErrorCode($response));
+                    throw new InternalServerErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
             }
         }
     }

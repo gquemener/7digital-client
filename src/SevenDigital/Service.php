@@ -79,7 +79,7 @@ abstract class Service
             throw new Exception(sprintf(
                 '7digital API responded with an error %d.',
                 $e->getResponse()->getStatusCode()
-            ));
+            ), 0, $e);
         }
 
         return $this->getContent($response);
