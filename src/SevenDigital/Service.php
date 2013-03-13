@@ -5,8 +5,8 @@ namespace SevenDigital;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
+use Guzzle\Http\Exception\BadResponseException;
 use SevenDigital\Exception\UnknownMethodException;
-use SevenDigital\Exception\AuthenticationException;
 use SevenDigital\Exception\Exception;
 
 abstract class Service
@@ -73,20 +73,16 @@ abstract class Service
 
     private function request(RequestInterface $request)
     {
-        $response = $request->send();
-        $status   = $response->getStatusCode();
-
-        switch ($status) {
-            case 401:
-                throw new AuthenticationException;
-
-            case 200:
-                return $this->getContent($response);
-
-            default:
-                throw new Exception($response->getReasonPhrase(), $status);
+        try {
+            $response = $request->send();
+        } catch (BadResponseException $e) {
+            throw new Exception(sprintf(
+                '7digital API responded with an error %d.',
+                $e->getResponse()->getStatusCode()
+            ));
         }
 
+        return $this->getContent($response);
     }
 
     private function getContent(Response $response)

@@ -36,16 +36,6 @@ class Track extends ObjectBehavior
         $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Track::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
-    function it_should_throw_an_exception_if_authorization_failed(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'track/search')->willReturn($request);
-        $response->getStatusCode()->willReturn(401);
-
-        $this->shouldThrow('SevenDigital\Exception\AuthenticationException')->duringSearch('The Prodigy');
-    }
-
     function its_search_method_should_create_a_GET_request_to_the_search_endpoint(
         $httpClient, $request, $response
     )
