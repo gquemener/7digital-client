@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class UserCardErrorException extends \Exception
+class UserCardErrorException extends Exception
 {
 }

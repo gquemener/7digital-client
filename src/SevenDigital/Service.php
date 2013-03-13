@@ -4,7 +4,10 @@ namespace SevenDigital;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
+use Guzzle\Http\Message\Response;
 use SevenDigital\Exception\UnknownMethodException;
+use SevenDigital\Exception\AuthenticationException;
+use SevenDigital\Exception\Exception;
 
 abstract class Service
 {
@@ -71,20 +74,29 @@ abstract class Service
     private function request(RequestInterface $request)
     {
         $response = $request->send();
+        $status   = $response->getStatusCode();
 
-        if (200 !== $response->getStatusCode()) {
-            throw new \Exception($response->getReasonPhrase());
-        }
+        switch ($status) {
+            case 401:
+                throw new AuthenticationException;
 
-        switch (true) {
-            case $response->isContentType('xml'):
-                return $response->xml();
-
-            case $response->isContentType('audio'):
-                $response->getBody()->getStream();
+            case 200:
+                return $this->getContent($response);
 
             default:
-                return $response->getBody();
+                throw new Exception($response->getReasonPhrase(), $status);
+        }
+
+    }
+
+    private function getContent(Response $response)
+    {
+        if ($response->isContentType('xml')) {
+            return $response->xml();
+        } else if ($response->isContentType('audio')) {
+            return $response->getBody()->getStream();
+        } else {
+            return $response->getBody();
         }
     }
 }

@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class InternalServerErrorException extends \Exception
+class InternalServerErrorException extends Exception
 {
 }

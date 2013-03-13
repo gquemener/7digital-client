@@ -4,6 +4,7 @@ namespace spec\SevenDigital\Service;
 
 use PHPSpec2\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
+use SevenDigital\Exception\UnauthorizedException;
 
 class Artist extends ObjectBehavior
 {
@@ -42,9 +43,8 @@ class Artist extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
         $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
 
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringBrowse('P');
+        $this->shouldThrow('SevenDigital\Exception\AuthenticationException')->duringBrowse('P');
     }
 
     function its_browse_method_should_create_a_GET_request_to_the_browse_endpoint(

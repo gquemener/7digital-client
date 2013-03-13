@@ -42,9 +42,8 @@ class Release extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'release/bydate')->willReturn($request);
         $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
 
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringBydate();
+        $this->shouldThrow('SevenDigital\Exception\AuthenticationException')->duringBydate();
     }
 
     function its_bydate_method_should_create_a_GET_request_to_the_bydate_endpoint(

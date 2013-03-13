@@ -42,9 +42,8 @@ class Track extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'track/search')->willReturn($request);
         $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
 
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringSearch('The Prodigy');
+        $this->shouldThrow('SevenDigital\Exception\AuthenticationException')->duringSearch('The Prodigy');
     }
 
     function its_search_method_should_create_a_GET_request_to_the_search_endpoint(

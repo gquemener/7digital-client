@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class APIErrorException extends Exception
+class Exception extends \Exception
 {
 }

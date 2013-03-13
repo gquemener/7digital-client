@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class InvalidResourceReferenceException extends \Exception
+class InvalidResourceReferenceException extends Exception
 {
 }

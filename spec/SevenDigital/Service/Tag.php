@@ -42,9 +42,8 @@ class Tag extends ObjectBehavior
     {
         $httpClient->createRequest('GET', 'tag/')->willReturn($request);
         $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
 
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringList();
+        $this->shouldThrow('SevenDigital\Exception\AuthenticationException')->duringList();
     }
 
     function its_list_method_should_create_a_GET_request_to_the_list_endpoint(

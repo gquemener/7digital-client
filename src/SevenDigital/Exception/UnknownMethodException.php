@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class UnknownMethodException extends \Exception
+class UnknownMethodException extends Exception
 {
 }

@@ -2,6 +2,6 @@
 
 namespace SevenDigital\Exception;
 
-class InvalidOrMissingInputParametersException extends \Exception
+class InvalidOrMissingInputParametersException extends Exception
 {
 }
