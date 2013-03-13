@@ -36,17 +36,6 @@ class Artist extends ObjectBehavior
         $this->shouldThrow(new UnknownMethodException('Call to undefined method SevenDigital\Service\Artist::invalidMethod().'))->duringInvalidMethod('incredibru');
     }
 
-    function it_should_throw_an_exception_if_authorization_failed(
-        $httpClient, $request, $response, $queryString
-    )
-    {
-        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
-        $response->getStatusCode()->willReturn(401);
-        $response->getReasonPhrase()->willReturn('Authentication failed');
-
-        $this->shouldThrow(new \Exception('Authentication failed'))->duringBrowse('P');
-    }
-
     function its_browse_method_should_create_a_GET_request_to_the_browse_endpoint(
         $httpClient, $request, $response
     )
