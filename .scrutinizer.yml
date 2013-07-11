@@ -14,3 +14,5 @@ tools:
         filter:
             excluded_paths: ["spec/*"]
     sensiolabs_security_checker: true
+    php_loc:
+        excluded_dirs: ["spec/*"]
