@@ -14,9 +14,7 @@
         "doctrine/common": "~2.3"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master as 0.7.2",
-        "phpspec/phpspec2": "dev-develop",
-        "phpspec/php-diff": "*@dev"
+        "phpspec/phpspec": "2.0.*@dev"
     },
     "minimum-stability": "stable",
     "autoload": {

@@ -2,14 +2,14 @@
 
 namespace spec\SevenDigital\EventListener;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SevenDigital\Exception\InvalidOrMissingInputParametersException;
 use SevenDigital\Exception\InvalidResourceReferenceException;
 use SevenDigital\Exception\UserCardErrorException;
 use SevenDigital\Exception\InternalServerErrorException;
 use SevenDigital\Exception\APIErrorException;
 
-class ErrorToExceptionSubscriber extends ObjectBehavior
+class ErrorToExceptionSubscriberSpec extends ObjectBehavior
 {
     /**
      * @param Guzzle\Common\Event          $event

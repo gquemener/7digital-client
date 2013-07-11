@@ -2,11 +2,11 @@
 
 namespace spec\SevenDigital;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class ApiClient extends ObjectBehavior
+class ApiClientSpec extends ObjectBehavior
 {
-    function let($httpClient)
+    function let()
     {
         $this->beConstructedWith('consumer_key');
     }

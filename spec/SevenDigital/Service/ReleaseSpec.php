@@ -2,10 +2,10 @@
 
 namespace spec\SevenDigital\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
 
-class Release extends ObjectBehavior
+class ReleaseSpec extends ObjectBehavior
 {
     /**
      * @param Guzzle\Http\Client                   $httpClient

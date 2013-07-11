@@ -2,10 +2,10 @@
 
 namespace spec\SevenDigital\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
 
-class Tag extends ObjectBehavior
+class TagSpec extends ObjectBehavior
 {
     /**
      * @param Guzzle\Http\Client                   $httpClient
