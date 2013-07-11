@@ -46,6 +46,7 @@ class ErrorToExceptionSubscriberSpec extends ObjectBehavior
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="ok" version="1.2">
@@ -61,6 +62,7 @@ XML
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="error" version="1.2">
@@ -78,6 +80,7 @@ XML
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="error" version="1.2">
@@ -95,6 +98,7 @@ XML
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="error" version="1.2">
@@ -112,6 +116,7 @@ XML
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="error" version="1.2">
@@ -129,6 +134,7 @@ XML
         $event, $response
     )
     {
+        $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
             <response status="error" version="1.2">
