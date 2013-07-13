@@ -2,9 +2,9 @@
 
 namespace spec\SevenDigital\EventListener;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class AddConsumerKeySubscriber extends ObjectBehavior
+class AddConsumerKeySubscriberSpec extends ObjectBehavior
 {
     function let()
     {

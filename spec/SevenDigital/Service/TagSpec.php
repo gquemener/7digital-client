@@ -2,10 +2,10 @@
 
 namespace spec\SevenDigital\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
 
-class Tag extends ObjectBehavior
+class TagSpec extends ObjectBehavior
 {
     /**
      * @param Guzzle\Http\Client                   $httpClient
@@ -40,10 +40,12 @@ class Tag extends ObjectBehavior
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'tag/')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'tag/')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->list();
+        $this->list()->shouldReturn('<response>');
     }
 
     function its_list_method_should_throw_exception_when_given_parameter_is_not_an_array(
@@ -51,7 +53,6 @@ class Tag extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'tag/')->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
 
         $this->shouldThrow(new \InvalidArgumentException('Impossible to match "foo" to a parameter, because method SevenDigital\Service\Tag::list() has no default parameter.'))->duringList('foo');
     }

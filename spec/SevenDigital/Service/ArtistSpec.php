@@ -2,10 +2,10 @@
 
 namespace spec\SevenDigital\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SevenDigital\Exception\UnknownMethodException;
 
-class Artist extends ObjectBehavior
+class ArtistSpec extends ObjectBehavior
 {
     /**
      * @param Guzzle\Http\Client                   $httpClient
@@ -40,10 +40,12 @@ class Artist extends ObjectBehavior
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->browse();
+        $this->browse()->shouldReturn('<response>');
     }
 
     function its_browse_method_should_use_first_argument_as_the_letter_parameter(
@@ -51,20 +53,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/browse')->willReturn($request);
-        $queryString->merge(array('letter' => 'b'))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->browse('b');
+        $queryString->merge(array('letter' => 'b'))->shouldBeCalled();
+
+        $this->browse('b')->shouldReturn('<response>');
     }
 
     function its_chart_method_should_create_a_GET_request_to_the_chart_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/chart')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->chart();
+        $this->chart()->shouldReturn('<response>');
     }
 
     function its_chart_method_should_throw_exception_when_given_parameter_is_not_an_array(
@@ -81,10 +88,12 @@ class Artist extends ObjectBehavior
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/details')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->details();
+        $this->details()->shouldReturn('<response>');;
     }
 
     function its_details_method_should_use_first_argument_as_the_artist_id_parameter(
@@ -92,20 +101,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/details')->willReturn($request);
-        $queryString->merge(array('artistId' => 42))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->details(42);
+        $queryString->merge(array('artistId' => 42))->shouldBeCalled();
+
+        $this->details(42)->shouldReturn('<response>');
     }
 
     function its_releases_method_should_create_a_GET_request_to_the_releases_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->releases();
+        $this->releases()->shouldReturn('<response>');
     }
 
     function its_releases_method_should_use_first_argument_as_the_artist_id_parameter(
@@ -113,20 +127,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/releases')->willReturn($request);
-        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->releases(123);
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+
+        $this->releases(123)->shouldReturn('<response>');
     }
 
     function its_search_method_should_create_a_GET_request_to_the_search_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/search')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/search')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->search();
+        $this->search()->shouldReturn('<response>');
     }
 
     function its_search_method_should_use_first_argument_as_the_q_parameter(
@@ -134,20 +153,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/search')->willReturn($request);
-        $queryString->merge(array('q' => 'Lenny Kravitz'))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->search('Lenny Kravitz');
+        $queryString->merge(array('q' => 'Lenny Kravitz'))->shouldBeCalled();
+
+        $this->search('Lenny Kravitz')->shouldReturn('<response>');
     }
 
     function its_toptracks_method_should_create_a_GET_request_to_the_toptracks_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/toptracks')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/toptracks')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->toptracks();
+        $this->toptracks()->shouldReturn('<response>');
     }
 
     function its_toptracks_method_should_use_first_argument_as_the_artist_id_parameter(
@@ -155,20 +179,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/toptracks')->willReturn($request);
-        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->toptracks(123);
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+
+        $this->toptracks(123)->shouldReturn('<response>');
     }
 
     function its_similar_method_should_create_a_GET_request_to_the_similar_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/similar')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/similar')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->similar();
+        $this->similar()->shouldReturn('<response>');
     }
 
     function its_similar_method_should_use_first_argument_as_the_artist_id_parameter(
@@ -176,20 +205,25 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/similar')->willReturn($request);
-        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->similar(123);
+        $queryString->merge(array('artistId' => 123))->shouldBeCalled();
+
+        $this->similar(123)->shouldReturn('<response>');
     }
 
     function its_tags_method_should_create_a_GET_request_to_the_tags_endpoint(
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/tags')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/tags')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->tags();
+        $this->tags()->shouldReturn('<response>');
     }
 
     function its_tags_method_should_throw_exception_when_given_parameter_is_not_an_array(
@@ -206,10 +240,12 @@ class Artist extends ObjectBehavior
         $httpClient, $request, $response
     )
     {
-        $httpClient->createRequest('GET', 'artist/bytag/top')->willReturn($request)->shouldBeCalled();
+        $httpClient->createRequest('GET', 'artist/bytag/top')->willReturn($request);
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->byTopTags();
+        $this->byTopTags()->shouldReturn('<response>');
     }
 
     function its_byTopTags_method_should_use_first_argument_as_the_tags_parameter(
@@ -217,9 +253,12 @@ class Artist extends ObjectBehavior
     )
     {
         $httpClient->createRequest('GET', 'artist/bytag/top')->willReturn($request);
-        $queryString->merge(array('tags' => 'rock, pop, 2000s'))->shouldBeCalled();
         $response->getStatusCode()->willReturn(200);
+        $response->isContentType('xml')->willReturn(true);
+        $response->xml()->willReturn('<response>');
 
-        $this->byTopTags('rock, pop, 2000s');
+        $queryString->merge(array('tags' => 'rock, pop, 2000s'))->shouldBeCalled();
+
+        $this->byTopTags('rock, pop, 2000s')->shouldReturn('<response>');
     }
 }
