@@ -5,7 +5,6 @@ namespace SevenDigital;
 use Guzzle\Http\Client;
 use Guzzle\Cache\DoctrineCacheAdapter;
 use Guzzle\Plugin\Cache\CachePlugin;
-use Doctrine\Common\Cache\ApcCache;
 use SevenDigital\EventListener\AddConsumerKeySubscriber;
 use SevenDigital\EventListener\ErrorToExceptionSubscriber;
 use SevenDigital\Service;
