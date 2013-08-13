@@ -6,7 +6,7 @@ tools:
         filter:
             excluded_paths: ["spec/*"]
         config:
-            standard: PSR1, PSR2
+            standard: PSR2
     php_mess_detector:
         filter:
             excluded_paths: ["spec/*"]
