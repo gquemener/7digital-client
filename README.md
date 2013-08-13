@@ -1,4 +1,7 @@
-Build status on master: [![Build Status](https://travis-ci.org/gquemener/7digital-client.png)](https://travis-ci.org/gquemener/7digital-client)
+[![Build Status](https://travis-ci.org/gquemener/7digital-client.png)](https://travis-ci.org/gquemener/7digital-client)
+[![Latest Stable Version](https://poser.pugx.org/gquemener/7digital-client/v/stable.png)](https://packagist.org/packages/gquemener/7digital-client)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/288367fa-47ff-4743-8528-5fc3d7e89ae6/mini.png)](https://insight.sensiolabs.com/projects/288367fa-47ff-4743-8528-5fc3d7e89ae6)
+[![Scrutinizer Continuous Inspections](https://scrutinizer-ci.com/g/gquemener/7digital-client/badges/general.png?s=5433331e2f508458b863be1dea67344a887f4bb6)](https://scrutinizer-ci.com/g/gquemener/7digital-client/)
 
 Installation
 ============
