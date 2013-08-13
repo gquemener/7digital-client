@@ -16,3 +16,7 @@ tools:
     sensiolabs_security_checker: true
     php_loc:
         excluded_dirs: ["spec/*"]
+    php_pdepend:
+        excluded_dirs:
+            - vendor
+            - spec
