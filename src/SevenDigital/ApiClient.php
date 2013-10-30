@@ -15,9 +15,12 @@ class ApiClient
 
     public function __construct($consumerKey, $cache = false, $version = '1.2')
     {
-        $this->httpClient = new Client('http://api.7digital.com/{version}', array(
-            'version' => $version,
-        ));
+        $this->httpClient = new Client(
+            'http://api.7digital.com/{version}',
+            array(
+                'version' => $version,
+            )
+        );
 
         if ($cache) {
             if (!$cache instanceof \Doctrine\Common\Cache\Cache) {

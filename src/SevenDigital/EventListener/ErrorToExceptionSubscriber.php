@@ -31,15 +31,30 @@ class ErrorToExceptionSubscriber implements EventSubscriberInterface
         if ($this->hasError($xml)) {
             switch ($this->getErrorCodeCategory($xml)) {
                 case '1':
-                    throw new InvalidOrMissingInputParametersException($this->getErrorMessage($xml), $this->getErrorCode($xml));
+                    throw new InvalidOrMissingInputParametersException(
+                        $this->getErrorMessage($xml),
+                        $this->getErrorCode($xml)
+                    );
                 case '2':
-                    throw new InvalidResourceReferenceException($this->getErrorMessage($xml), $this->getErrorCode($xml));
+                    throw new InvalidResourceReferenceException(
+                        $this->getErrorMessage($xml),
+                        $this->getErrorCode($xml)
+                    );
                 case '3':
-                    throw new UserCardErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
+                    throw new UserCardErrorException(
+                        $this->getErrorMessage($xml),
+                        $this->getErrorCode($xml)
+                    );
                 case '7':
-                    throw new APIErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
+                    throw new APIErrorException(
+                        $this->getErrorMessage($xml),
+                        $this->getErrorCode($xml)
+                    );
                 case '9':
-                    throw new InternalServerErrorException($this->getErrorMessage($xml), $this->getErrorCode($xml));
+                    throw new InternalServerErrorException(
+                        $this->getErrorMessage($xml),
+                        $this->getErrorCode($xml)
+                    );
             }
         }
     }

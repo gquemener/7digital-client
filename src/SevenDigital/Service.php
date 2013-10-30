@@ -24,9 +24,13 @@ abstract class Service
     public function __call($method, $arguments)
     {
         if (!isset($this->methods[$method])) {
-            throw new UnknownMethodException(sprintf(
-                'Call to undefined method %s::%s().', get_class($this), $method
-            ));
+            throw new UnknownMethodException(
+                sprintf(
+                    'Call to undefined method %s::%s().',
+                    get_class($this),
+                    $method
+                )
+            );
         }
 
         $endpoint = null !== $this->methods[$method]['endpoint'] ? $this->methods[$method]['endpoint'] : $method;
@@ -62,10 +66,14 @@ abstract class Service
         }
 
         if (null === $defaultParameter = $this->methods[$method]['defaultParameter']) {
-            throw new \InvalidArgumentException(sprintf(
-                'Impossible to match "%s" to a parameter, because method %s::%s() has no default parameter.',
-                $argument, get_class($this), $method
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Impossible to match "%s" to a parameter, because method %s::%s() has no default parameter.',
+                    $argument,
+                    get_class($this),
+                    $method
+                )
+            );
         }
 
         return array($defaultParameter => $argument);
@@ -76,10 +84,14 @@ abstract class Service
         try {
             $response = $request->send();
         } catch (BadResponseException $e) {
-            throw new Exception(sprintf(
-                '7digital API responded with an error %d.',
-                $e->getResponse()->getStatusCode()
-            ), 0, $e);
+            throw new Exception(
+                sprintf(
+                    '7digital API responded with an error %d.',
+                    $e->getResponse()->getStatusCode()
+                ),
+                0,
+                $e
+            );
         }
 
         return $this->getContent($response);
@@ -89,7 +101,7 @@ abstract class Service
     {
         if ($response->isContentType('xml')) {
             return $response->xml();
-        } else if ($response->isContentType('audio')) {
+        } elseif ($response->isContentType('audio')) {
             return $response->getBody()->getStream();
         } else {
             return $response->getBody();
