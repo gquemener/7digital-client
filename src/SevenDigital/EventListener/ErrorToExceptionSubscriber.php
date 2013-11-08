@@ -23,40 +23,35 @@ class ErrorToExceptionSubscriber implements EventSubscriberInterface
     public function onRequestSuccess(Event $event)
     {
         $response = $event['response'];
-        if (false === $response->isContentType('xml')) {
+        if (false === $response->isContentType('xml') || !$this->hasError($response->xml())) {
             return;
         }
 
-        $xml = $response->xml();
-        if (!$this->hasError($xml)) {
-            return;
-        }
-
-        switch ($this->getErrorCodeCategory($xml)) {
+        switch ($this->getErrorCodeCategory($response->xml())) {
             case '1':
                 throw new InvalidOrMissingInputParametersException(
-                    $this->getErrorMessage($xml),
-                    $this->getErrorCode($xml)
+                    $this->getErrorMessage($response->xml()),
+                    $this->getErrorCode($response->xml())
                 );
             case '2':
                 throw new InvalidResourceReferenceException(
-                    $this->getErrorMessage($xml),
-                    $this->getErrorCode($xml)
+                    $this->getErrorMessage($response->xml()),
+                    $this->getErrorCode($response->xml())
                 );
             case '3':
                 throw new UserCardErrorException(
-                    $this->getErrorMessage($xml),
-                    $this->getErrorCode($xml)
+                    $this->getErrorMessage($response->xml()),
+                    $this->getErrorCode($response->xml())
                 );
             case '7':
                 throw new APIErrorException(
-                    $this->getErrorMessage($xml),
-                    $this->getErrorCode($xml)
+                    $this->getErrorMessage($response->xml()),
+                    $this->getErrorCode($response->xml())
                 );
             case '9':
                 throw new InternalServerErrorException(
-                    $this->getErrorMessage($xml),
-                    $this->getErrorCode($xml)
+                    $this->getErrorMessage($response->xml()),
+                    $this->getErrorCode($response->xml())
                 );
         }
     }
