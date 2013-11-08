@@ -34,7 +34,7 @@ tools:
         filter:
             excluded_paths: ['spec/*']
         config:
-            ruleset: 'PSR1, PSR2'
+            ruleset: 'PSR2'
             sniffs: { generic: { white_space: { disallow_tab_indent_sniff: true, scope_indent_sniff: true }, php: { disallow_short_open_tag_sniff: true, lower_case_constant_sniff: true }, formatting: { multiple_statement_alignment_sniff: true, space_after_cast_sniff: true }, functions: { function_call_argument_spacing_sniff: true }, files: { one_class_per_file_sniff: true, line_endings_sniff: true }, commenting: { fixme_sniff: true, todo_sniff: true }, control_structures: { inline_control_structure_sniff: true }, naming_conventions: { camel_caps_function_name_sniff: true, constructor_name_sniff: true, upper_case_constant_name_sniff: true }, metrics: { cyclomatic_complexity_sniff: true, nesting_level_sniff: true } } }
     sensiolabs_security_checker: true
     php_cpd: true
