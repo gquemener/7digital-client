@@ -17,6 +17,9 @@
         "phpspec/phpspec": "2.0.*@dev",
         "henrikbjorn/phpspec-code-coverage" : "dev-master@dev"
     },
+    "suggest": {
+        "gquemener/7digital-bundle": "7digital API PHP Client integration into Symfony2 Framework"
+    },
     "minimum-stability": "stable",
     "autoload": {
         "psr-0": { "": "src/" }
