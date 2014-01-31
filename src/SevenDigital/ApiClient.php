@@ -13,7 +13,7 @@ class ApiClient
 {
     protected $httpClient;
 
-    public function __construct($consumerKey, $cache = false, $version = '1.2')
+    public function __construct($consumerKey, $cache = null, $version = '1.2')
     {
         $this->httpClient = new Client(
             'http://api.7digital.com/{version}',
