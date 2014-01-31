@@ -1,5 +1,1 @@
 formatter.name: pretty
-code_coverage:
-    format: php
-extensions:
-    - PhpSpec\Extension\CodeCoverageExtension

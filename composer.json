@@ -14,8 +14,7 @@
         "doctrine/common": "~2.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.0.*@dev",
-        "henrikbjorn/phpspec-code-coverage" : "dev-master@dev"
+        "phpspec/phpspec": "~2.0@dev"
     },
     "suggest": {
         "gquemener/7digital-bundle": "7digital API PHP Client integration into Symfony2 Framework"
