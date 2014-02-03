@@ -21,7 +21,9 @@
     },
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": {
+            "SevenDigital\\": "src/"
+        }
     },
     "config": {
         "bin-dir": "bin"
