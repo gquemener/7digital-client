@@ -8,6 +8,7 @@ use SevenDigital\Exception\InvalidResourceReferenceException;
 use SevenDigital\Exception\UserCardErrorException;
 use SevenDigital\Exception\InternalServerErrorException;
 use SevenDigital\Exception\APIErrorException;
+use SevenDigital\Exception\Factory\ExceptionFactoryInterface;
 
 class ErrorToExceptionSubscriberSpec extends ObjectBehavior
 {
@@ -34,8 +35,7 @@ class ErrorToExceptionSubscriberSpec extends ObjectBehavior
 
     function it_should_do_nothing_if_the_response_content_type_is_not_xml(
         $event, $response
-    )
-    {
+    ) {
         $response->isContentType('xml')->willReturn(false);
         $response->xml()->shouldNotBeCalled();
 
@@ -44,8 +44,7 @@ class ErrorToExceptionSubscriberSpec extends ObjectBehavior
 
     function it_should_do_nothing_if_the_response_content_status_is_ok(
         $event, $response
-    )
-    {
+    ) {
         $response->isContentType('xml')->willReturn(true);
         $response->xml()->willReturn(new \SimpleXMLElement(
 <<<XML
@@ -58,93 +57,21 @@ XML
         $this->onRequestSuccess($event);
     }
 
-    function it_should_throw_a_validation_exception_when_error_code_starts_with_1(
-        $event, $response
-    )
-    {
+    function it_should_use_an_eligible_exception_factory_to_convert_error_into_exception(
+        $event,
+        $response,
+        ExceptionFactoryInterface $factory
+    ) {
+        $this->registerFactory($factory);
+
         $response->isContentType('xml')->willReturn(true);
-        $response->xml()->willReturn(new \SimpleXMLElement(
-<<<XML
-            <response status="error" version="1.2">
-                <error code="1001">
-                  <errorMessage>Missing artist ID</errorMessage>
-                </error>
-            </response>
-XML
-        ));
+        $xml = new \SimpleXMLElement('<response />');
+        $response->xml()->willReturn($xml);
 
-        $this->shouldThrow(new InvalidOrMissingInputParametersException('Missing artist ID', 1001))->duringOnRequestSuccess($event);
-    }
+        $factory->supports($xml)->willReturn(true);
+        $exception = new \Exception();
+        $factory->create($xml)->willReturn($exception);
 
-    function it_should_throw_an_invalid_resource_exception_when_error_code_starts_with_2(
-        $event, $response
-    )
-    {
-        $response->isContentType('xml')->willReturn(true);
-        $response->xml()->willReturn(new \SimpleXMLElement(
-<<<XML
-            <response status="error" version="1.2">
-                <error code="2001">
-                  <errorMessage>Resource cannot be found</errorMessage>
-                </error>
-            </response>
-XML
-        ));
-
-        $this->shouldThrow(new InvalidResourceReferenceException('Resource cannot be found', 2001))->duringOnRequestSuccess($event);
-    }
-
-    function it_should_throw_a_user_card_error_exception_when_error_code_starts_with_3(
-        $event, $response
-    )
-    {
-        $response->isContentType('xml')->willReturn(true);
-        $response->xml()->willReturn(new \SimpleXMLElement(
-<<<XML
-            <response status="error" version="1.2">
-                <error code="3001">
-                  <errorMessage>The user's card has expired</errorMessage>
-                </error>
-            </response>
-XML
-        ));
-
-        $this->shouldThrow(new UserCardErrorException('The user\'s card has expired', 3001))->duringOnRequestSuccess($event);
-    }
-
-    function it_should_throw_a_7digital_API_application_error_exception_when_error_code_starts_with_7(
-        $event, $response
-    )
-    {
-        $response->isContentType('xml')->willReturn(true);
-        $response->xml()->willReturn(new \SimpleXMLElement(
-<<<XML
-            <response status="error" version="1.2">
-                <error code="7001">
-                  <errorMessage>Unable to perform action</errorMessage>
-                </error>
-            </response>
-XML
-        ));
-
-        $this->shouldThrow(new APIErrorException('Unable to perform action', 7001))->duringOnRequestSuccess($event);
-    }
-
-    function it_should_throw_an_internal_server_error_exception_when_error_code_starts_with_9(
-        $event, $response
-    )
-    {
-        $response->isContentType('xml')->willReturn(true);
-        $response->xml()->willReturn(new \SimpleXMLElement(
-<<<XML
-            <response status="error" version="1.2">
-                <error code="9001">
-                  <errorMessage>Unexpected internal server error</errorMessage>
-                </error>
-            </response>
-XML
-        ));
-
-        $this->shouldThrow(new InternalServerErrorException('Unexpected internal server error', 9001))->duringOnRequestSuccess($event);
+        $this->shouldThrow($exception)->duringOnRequestSuccess($event);
     }
 }
