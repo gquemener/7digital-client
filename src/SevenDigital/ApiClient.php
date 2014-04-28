@@ -25,28 +25,14 @@ class ApiClient
         );
 
         if ($cache) {
-            if (!$cache instanceof \Doctrine\Common\Cache\Cache) {
+            if (!$cache instanceof Cache) {
                 throw new \Exception('Provided cache does not implement "Doctrine\Common\Cache\Cache"');
             }
-            $adapter    = new DoctrineCacheAdapter($cache);
-            $subscriber = new CachePlugin($adapter);
-            $this->httpClient->addSubscriber($subscriber);
+            $this->registerCachePlugin($cache);
         }
 
-        $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($consumerKey));
+        $this->registerConsumerKeySubscriber($consumerKey);
         $this->registerExceptionFactories();
-    }
-
-    public function registerExceptionFactories()
-    {
-        $subscriber = new ErrorToExceptionSubscriber();
-        $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory());
-        $subscriber->registerFactory(new Factory\InvalidResourceReferenceExceptionFactory());
-        $subscriber->registerFactory(new Factory\UserCardErrorExceptionFactory());
-        $subscriber->registerFactory(new Factory\APIErrorExceptionFactory());
-        $subscriber->registerFactory(new Factory\InternalServerErrorExceptionFactory());
-
-        $this->httpClient->addSubscriber($subscriber);
     }
 
     public function getTrackService()
@@ -67,5 +53,35 @@ class ApiClient
     public function getTagService()
     {
         return new Service\Tag($this->httpClient);
+    }
+
+    private function registerCachePlugin(Cache $cache)
+    {
+        $this->httpClient->addSubscriber(
+            new CachePlugin(
+                new DoctrineCacheAdapter($cache)
+            )
+        );
+    }
+
+    private function registerConsumerKeySubscriber($consumerKey)
+    {
+        $this->httpClient->addSubscriber(
+            new AddConsumerKeySubscriber(
+                $consumerKey
+            )
+        );
+    }
+
+    private function registerExceptionFactories()
+    {
+        $subscriber = new ErrorToExceptionSubscriber();
+        $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory());
+        $subscriber->registerFactory(new Factory\InvalidResourceReferenceExceptionFactory());
+        $subscriber->registerFactory(new Factory\UserCardErrorExceptionFactory());
+        $subscriber->registerFactory(new Factory\APIErrorExceptionFactory());
+        $subscriber->registerFactory(new Factory\InternalServerErrorExceptionFactory());
+
+        $this->httpClient->addSubscriber($subscriber);
     }
 }
