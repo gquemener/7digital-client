@@ -12,7 +12,7 @@ class APIErrorExceptionFactorySpec extends ObjectBehavior
         $this->shouldHaveType('SevenDigital\Exception\Factory\ExceptionFactoryInterface');
     }
 
-    function it_supports_error_code_starting_by_2()
+    function it_supports_error_code_starting_by_7()
     {
         $xml = new \SimpleXMLElement(
             <<<XML
@@ -27,7 +27,7 @@ XML
         $this->supports($xml)->shouldBe(true);
     }
 
-    function it_creates_invalid_resource_reference_exception()
+    function it_creates_api_error_exception()
     {
         $xml = new \SimpleXMLElement(
             <<<XML
