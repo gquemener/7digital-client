@@ -13,7 +13,7 @@ use SevenDigital\Exception\Factory\ExceptionFactoryInterface;
 
 class ErrorToExceptionSubscriber implements EventSubscriberInterface
 {
-    protected $factories = [];
+    protected $factories = array();
 
     public static function getSubscribedEvents()
     {
@@ -36,9 +36,7 @@ class ErrorToExceptionSubscriber implements EventSubscriberInterface
 
         foreach ($this->factories as $factory) {
             if ($factory->supports($response->xml())) {
-                throw $factory->create(
-                    $response->xml()
-                );
+                throw $factory->create($response->xml());
             }
         }
     }
