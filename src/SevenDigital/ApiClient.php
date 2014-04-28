@@ -42,6 +42,7 @@ class ApiClient
         $subscriber = new ErrorToExceptionSubscriber();
         $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory());
         $subscriber->registerFactory(new Factory\InvalidResourceReferenceExceptionFactory());
+        $subscriber->registerFactory(new Factory\UserCardErrorExceptionFactory());
 
         $this->httpClient->addSubscriber($subscriber);
     }
