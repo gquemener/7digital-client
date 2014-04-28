@@ -2,11 +2,13 @@
 
 namespace SevenDigital;
 
+use Doctrine\Common\Cache\Cache;
 use Guzzle\Http\Client;
 use Guzzle\Cache\DoctrineCacheAdapter;
 use Guzzle\Plugin\Cache\CachePlugin;
 use SevenDigital\EventListener\AddConsumerKeySubscriber;
 use SevenDigital\EventListener\ErrorToExceptionSubscriber;
+use SevenDigital\Exception\Factory;
 use SevenDigital\Service;
 
 class ApiClient
@@ -32,7 +34,15 @@ class ApiClient
         }
 
         $this->httpClient->addSubscriber(new AddConsumerKeySubscriber($consumerKey));
-        $this->httpClient->addSubscriber(new ErrorToExceptionSubscriber);
+        $this->registerExceptionFactories();
+    }
+
+    public function registerExceptionFactories()
+    {
+        $subscriber = new ErrorToExceptionSubscriber();
+        $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory);
+
+        $this->httpClient->addSubscriber($subscriber);
     }
 
     public function getTrackService()
