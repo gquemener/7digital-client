@@ -40,7 +40,8 @@ class ApiClient
     public function registerExceptionFactories()
     {
         $subscriber = new ErrorToExceptionSubscriber();
-        $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory);
+        $subscriber->registerFactory(new Factory\InvalidOrMissingInputParametersExceptionFactory());
+        $subscriber->registerFactory(new Factory\InvalidResourceReferenceExceptionFactory());
 
         $this->httpClient->addSubscriber($subscriber);
     }
