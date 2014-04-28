@@ -44,6 +44,7 @@ class ApiClient
         $subscriber->registerFactory(new Factory\InvalidResourceReferenceExceptionFactory());
         $subscriber->registerFactory(new Factory\UserCardErrorExceptionFactory());
         $subscriber->registerFactory(new Factory\APIErrorExceptionFactory());
+        $subscriber->registerFactory(new Factory\InternalServerErrorExceptionFactory());
 
         $this->httpClient->addSubscriber($subscriber);
     }
