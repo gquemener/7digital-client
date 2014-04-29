@@ -9,7 +9,6 @@ use Guzzle\Plugin\Cache\CachePlugin;
 use SevenDigital\EventListener\AddConsumerKeySubscriber;
 use SevenDigital\EventListener\ErrorToExceptionSubscriber;
 use SevenDigital\Exception\Factory;
-use SevenDigital\Service;
 
 class ApiClient
 {
