@@ -4,11 +4,6 @@ namespace SevenDigital\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Guzzle\Common\Event;
-use SevenDigital\Exception\InvalidOrMissingInputParametersException;
-use SevenDigital\Exception\InvalidResourceReferenceException;
-use SevenDigital\Exception\UserCardErrorException;
-use SevenDigital\Exception\APIErrorException;
-use SevenDigital\Exception\InternalServerErrorException;
 use SevenDigital\Exception\Factory\ExceptionFactoryInterface;
 
 class ErrorToExceptionSubscriber implements EventSubscriberInterface
